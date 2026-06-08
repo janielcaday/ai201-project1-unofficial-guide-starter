@@ -56,6 +56,46 @@ Homeowner / Landlord Assistant
 
 ---
 
+## Sample Chunks & Retrieval Test Results
+
+**QUERY**: *How long does a landlord have to return a security deposit in Georgia?*
+
+### Result 1
+#### source=security_deposits.md
+#### distance=0.1858
+be returned to the tenant under the terms of the residential rental agreement or which were to be applied toward the payment of rent or reimbursement of services or utilities provided to the tenant. Georgia Landlord Tenant Law, under 44-7-34, requires that a security deposit be returned to the tenant upon termination of the tenancy, except for any damages caused by the tenant. This is another reas
+
+
+### Result 2
+#### source=security_deposits.md
+#### distance=0.2757
+Deposit
+
+Security deposits in Georgia Landlord Tenant Laws are addressed in Georgia Code Title 44, Chapter 7, Article 2, "Security Deposits." The legal definition of a security deposit in Georgia is: (3) "Security deposit" means money or any other form of security given after July 1, 1976, by a tenant to a landlord which shall be held by the landlord on behalf of a tenant by virtue of a residenti
+
+
+### Result 3
+#### source=georgia_landlord_tenant_laws.md
+#### distance=0.2758
+the landlord must notify the potential tenant in writing before entering a lease. If the landlord does not give notice, the landlord is liable for property damage from flooding during the lease. Security Deposit When Moving In. The security deposit protects the landlord if a tenant moves out owing money or having damaged the property. If you give proper notice and vacate without owing rent or caus
+
+
+### Result 4
+#### source=security_deposits.md
+#### distance=0.2928
+In/Move Out Checklist and the Notice of Right to Inspection Prior to Termination of Tenancy Forms. All these forms protect the landlord regarding security deposits under Georgia Landlord Tenant Laws. The laws regarding security deposits also protect tenants. While a landlord has a right to retain part or all of the security deposit upon termination of tenancy, a tenant may have cause to object to
+
+
+### Result 5
+#### source=lease_agreements.md
+#### distance=0.3297
+in this Lease. Any increase in Rent to take
+effect upon renewal or extension of the Term of this Lease must be preceded
+by a           - day notice of the same from the Landlord to the Tenant. SECURITY DEPOSIT. The Tenant shall handover to the landlord the amount of _ as Security Deposit upon the execution of this Lease (the “Security
+Deposit”). The receipt of such Security Deposit is hereby ackno
+
+---
+
 ## Embedding Model
 
 <!-- Name the embedding model you used and explain your choice.
@@ -135,6 +175,32 @@ Before the chunks even reach the model, a distance filter (`distance <= 0.7`) dr
 **Root cause (tied to a specific pipeline stage):** Retrieval + distance filtering. The question "What should I check before approving a rental applicant?" is phrased around a landlord's decision-making process, but `tenant_screening.md` is framed around FCRA compliance and consumer reports — the semantic distance between those two framings pushed the relevant chunks past the 0.7 cosine distance threshold, so they were dropped before the model ever saw them. The model then had no grounded context and correctly refused to answer.
 
 **What you would change to fix it:** Two options: (1) lower or remove the distance threshold and instead pass all top-k chunks to the model, relying on the system prompt to say "I don't know" when context is weak; (2) rephrase the tenant screening document to include more direct landlord-action language (e.g., "steps to approve an applicant") so its embeddings align more closely with the kinds of queries a landlord would ask.
+
+---
+
+## Query Interface
+
+### Input: 
+*What can a landlord legally deduct from a security deposit?*
+
+### Output:
+A landlord can legally deduct the following from a security deposit:
+
+Unpaid rent
+Late fees
+Unpaid utilities
+Cost of repairs beyond ordinary wear and tear
+Cleaning fee
+Early Termination Fee
+Brokerage fees
+Other expenses (as specified in the lease agreement)
+These deductions are allowed under the lease agreement and Georgia landlord-tenant laws, as long as the landlord provides an itemized list of deductions and returns the remaining balance to the tenant within the required timeframe (30 days).
+
+Sources:
+• georgia_landlord_tenant_laws.md
+• lease_agreements.md
+• property_inspections.md
+
 
 ---
 
